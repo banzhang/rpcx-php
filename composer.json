@@ -1,0 +1,23 @@
+{
+    "name": "rpcx/php",
+    "description": "rpcx(https://github.com/smallnest/rpcx ) 的 PHP 客户端实现",
+    "type": "library",
+    "license": "Apache License",
+    "autoload": {
+        "psr-4": {
+            "Rpcx\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "侯伟宗",
+            "email": "337207961@qq.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.2"
+    },
+    "scripts": {
+        "test": "phpunit --stop-on-failure"
+    }
+}
