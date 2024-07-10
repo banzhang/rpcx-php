@@ -1,13 +1,13 @@
 <?php
 
 namespace Rpcx\tests;
-use Exception;
+use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * 检测用于 Mock Rpcx 的golang服务端和客户端程序是否可以在本机正常执行
  */
-class T0RpcxStubTest extends TestCase
+class T000Test extends TestCase
 {
 
     /**
@@ -50,7 +50,7 @@ class T0RpcxStubTest extends TestCase
 
     /**
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
     protected function setUp():void
     {
@@ -60,7 +60,7 @@ class T0RpcxStubTest extends TestCase
         $this->getRpcxBin();
         $process = proc_open($this->svr, [], $pipes);
         if (!is_resource($process)) {
-            throw new Exception('启动服务端失败');
+            throw new RuntimeException('启动服务端失败');
         }
         $this->process = $process;
         sleep(5);
@@ -68,12 +68,12 @@ class T0RpcxStubTest extends TestCase
 
     /**
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
     protected function getRpcxBin():void
     {
         if (!isset($this->supports, $this->os)) {
-            throw new Exception('当前操作系统不支持: '.$this->os);
+            throw new RuntimeException('当前操作系统不支持: '.$this->os);
         }
         $this->svr = $this->binPath . $this->os . '-' . $this->arch . '-rpcx';
         $this->cli = $this->binPath . $this->os . '-' . $this->arch . '-cli';
@@ -90,13 +90,13 @@ class T0RpcxStubTest extends TestCase
 
     /**
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
     public function testStub()
     {
         exec($this->cli, $output, $return);
         if ($return != 0) {
-            throw new Exception('启动客户端失败');
+            throw new RuntimeException('启动客户端失败');
         }
         $res = $output[0];
         $this->assertIsInt(strpos($res, '10 * 20 = 200'));

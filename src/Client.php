@@ -3,6 +3,9 @@
 namespace Rpcx;
 
 use Exception;
+use InvalidArgumentException;
+use UnexpectedValueException;
+use Rpcx\exception\ErrorResponseException as ErrorResponseException;
 use Rpcx\protocol\Request as Request;
 use Rpcx\protocol\Header as Header;
 use Rpcx\protocol\Response as Response;
@@ -24,11 +27,11 @@ class Client
     {
         switch ($type) {
             case self::TCP:
-                $this->transport = $persistent ? new PTcpConnection() : new TcpConnection();;
+                $this->transport = $persistent ? new PTcpConnection() : new TcpConnection();
                 $this->transport->setServer($service);
                 break;
 
-            default: throw new Exception('Invalid connection type');
+            default: throw new InvalidArgumentException('Invalid connection type');
         }
     }
 
@@ -40,7 +43,7 @@ class Client
         $request = new Request($heartbeat, $oneway, $service_path, $service_method, $args, $meta, $msg_id);
         $this->transport->setTimeout(1, 1);
         if (!$this->transport->IsConnected()) {
-            $this->transport->Open(STREAM_CLIENT_PERSISTENT, null);
+            $this->transport->Open(STREAM_CLIENT_CONNECT, null);
         }
         $this->transport->Send($request->toBytes());
 
@@ -51,18 +54,19 @@ class Client
         $headStr = $this->transport->rev(Header::LEN);
         if (strlen($headStr) < Header::LEN) {
             $this->transport->Close();
-            throw new Exception('Invalid header size');
+            throw new UnexpectedValueException('Invalid header size');
         }
 
         $header = new Header();
         $header->decode($headStr);
         $response = new Response($header);
         if (!$response->isSuccess()) {
-            throw new Exception('Failed to call service: ' . $response->getError());
+            throw new ErrorResponseException(
+                'Failed to call service: ' . $response->getError(),
+                ErrorResponseException::RESPONSE_ERROR);
         }
         $play = $this->transport->rev();
         $response->decode($play);
-        $this->transport->Close();
         return $response;
     }
 }
