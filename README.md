@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/rka77rq2kjf1x6ei/branch/main?svg=true)](https://ci.appveyor.com/project/banzhang/rpcx-php/branch/main)
 # 关于 rpc-php
 
 rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html)  访问 [rpcx.io](https://rpcx.io/) 服务的客户端  
