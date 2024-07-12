@@ -1,0 +1,11 @@
+language: php
+php:
+  - 7.4
+  - 8.0
+  - 8.1
+
+before_script:
+  - composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+script:
+  - composer run-script test src/tests
