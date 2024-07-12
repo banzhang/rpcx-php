@@ -8,6 +8,11 @@
             "Rpcx\\": "src/"
         }
     },
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        }
+    },
     "authors": [
         {
             "name": "侯伟宗",
@@ -18,7 +23,7 @@
         "php": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.2"
+        "phpunit/phpunit": "^9.1"
     },
     "scripts": {
         "test": "phpunit --stop-on-failure"
