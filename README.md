@@ -33,6 +33,13 @@ rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html) 
 - composer require rpcx/rpc-php
 - composer run-script test src/tests
 
-# 问题反馈
-## 联系方式
+## 使用
+```
+$client = new Client('127.0.0.1::8972', Client::TCP, false);
+$response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
+$res = $response->payload;
+```
+
+## 问题反馈
+### 联系方式
 - qq:337207961@qq.com
