@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: macos-12
+    runs-on: macos-13
 
     steps:
     - uses: actions/checkout@v4
@@ -34,6 +34,9 @@ jobs:
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+    - name: Setup Rpcx Server
+      run: sh src/bin/darwin-64-rpcx &
 
     - name: Run test suite
       run: composer run-script test src/tests

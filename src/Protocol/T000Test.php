@@ -1,6 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ */
 
-namespace Rpcx\tests;
+namespace Rpcx\Protocol;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
