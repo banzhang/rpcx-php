@@ -36,7 +36,7 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Setup Rpcx Server
-      run: sh src/bin/darwin-64-rpcx &
+      run: sh /Users/runner/work/rpcx-php/rpcx-php/src/tests/bin/darwin-64-rpcx &
 
     - name: Run test suite
       run: composer run-script test src/tests
