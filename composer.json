@@ -26,6 +26,6 @@
         "phpunit/phpunit": "^10.0"
     },
     "scripts": {
-        "test": "phpunit --stop-on-failure"
+        "test": "phpunit --stop-on-failure --coverage-clover coverage.xml --coverage-filter src "
     }
 }

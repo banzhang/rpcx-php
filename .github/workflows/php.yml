@@ -46,3 +46,11 @@ jobs:
 
     - name: Run test suite
       run: composer run-script test src/tests
+
+    - name: Upload code coverage report to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          fail_ci_if_error: true

@@ -3,7 +3,7 @@
  * Copyright (c) 2024.
  */
 
-namespace Rpcx\Protocol;
+namespace Rpcx\tests;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
@@ -88,7 +88,6 @@ class T000Test extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        proc_close($this->process);
     }
 
     /**
