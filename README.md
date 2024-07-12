@@ -1,4 +1,5 @@
 [![PHP Composer](https://github.com/banzhang/rpcx-php/actions/workflows/php.yml/badge.svg)](https://github.com/banzhang/rpcx-php/actions/workflows/php.yml)
+[![codecov](https://codecov.io/github/banzhang/rpcx-php/graph/badge.svg?token=J8ZGOEGQKR)](https://codecov.io/github/banzhang/rpcx-php)
 # 关于 rpc-php
 
 rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html)  访问 [rpcx.io](https://rpcx.io/) 服务的客户端  

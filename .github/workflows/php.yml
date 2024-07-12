@@ -41,8 +41,6 @@ jobs:
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    - name: Setup Rpcx Server
-      run: /Users/runner/work/rpcx-php/rpcx-php/src/tests/bin/darwin-64-rpcx &
 
     - name: Run test suite
       run: composer run-script test src/tests
