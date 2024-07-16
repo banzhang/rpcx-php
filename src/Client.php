@@ -4,14 +4,15 @@ namespace Rpcx;
 
 use Exception;
 use InvalidArgumentException;
+use Rpcx\Connection\IConnection as IConnection;
+use Rpcx\Connection\PTcpConnection as PTcpConnection;
+use Rpcx\Connection\TcpConnection as TcpConnection;
+use Rpcx\Connection\UdsConnection as UdsConnection;
+use Rpcx\Exception\ErrorResponseException as ErrorResponseException;
+use Rpcx\Protocol\Header as Header;
+use Rpcx\Protocol\Request as Request;
+use Rpcx\Protocol\Response as Response;
 use UnexpectedValueException;
-use Rpcx\exception\ErrorResponseException as ErrorResponseException;
-use Rpcx\protocol\Request as Request;
-use Rpcx\protocol\Header as Header;
-use Rpcx\protocol\Response as Response;
-use Rpcx\connection\TcpConnection as TcpConnection;
-use Rpcx\connection\PTcpConnection as PTcpConnection;
-use Rpcx\connection\IConnection as IConnection;
 
 class Client
 {
@@ -31,6 +32,10 @@ class Client
                 $this->transport->setServer($service);
                 break;
 
+            case self::UDS:
+                $this->transport = new UdsConnection();
+                $this->transport->setServer($service);
+                break;
             default: throw new InvalidArgumentException('Invalid connection type');
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rpcx\connection;
+namespace Rpcx\Connection;
 
 class PTcpConnection extends TcpConnection
 {

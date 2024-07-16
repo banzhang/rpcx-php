@@ -1,8 +1,8 @@
 <?php
 
-namespace Rpcx\connection;
+namespace Rpcx\Connection;
 
-use Rpcx\exception\TcpException as TcpException;
+use Rpcx\Exception\TcpException as TcpException;
 
 /**
  *

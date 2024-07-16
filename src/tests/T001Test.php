@@ -28,6 +28,18 @@ class T001Test extends TestCase
         $this->assertEquals($succ, $res);
     }
 
+    public function testUdsCall()
+    {
+        $succ = ["C" => 200];
+        for ($i=0;$i<3;$i++) {
+            $client = new Client('/tmp/rpcx.sock', Client::UDS, false);
+            $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
+            $res = $response->payload;
+        }
+
+        $this->assertEquals($succ, $res);
+    }
+
     /**
      * 测试 Call 方法
      *

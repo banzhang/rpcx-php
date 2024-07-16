@@ -1,6 +1,6 @@
 <?php
 
-namespace Rpcx\protocol;
+namespace Rpcx\Protocol;
 
 
 use Exception;

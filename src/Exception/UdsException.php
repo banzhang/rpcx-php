@@ -1,14 +1,17 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ */
 
 namespace Rpcx\Exception;
-use Throwable;
+
 use RuntimeException;
 
-class TcpException extends RuntimeException
+class UdsException extends RuntimeException
 {
-    const TCP_SERVER_FOMART_ERROR = 40001;
+    const UDS_SERVER_FOMART_ERROR = 40003;
 
-    const TCP_SEND_ERROR = 40002;
+    const UDS_SEND_ERROR = 40004;
 
 
     /**

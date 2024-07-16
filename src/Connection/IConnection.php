@@ -1,12 +1,12 @@
 <?php
 
-namespace Rpcx\connection;
+namespace Rpcx\Connection;
 
 interface IConnection
 {
     /**
      * 设置服务器地址
-     * @param string $server tcp://x.x.x.x:port   or unix://path/x.scok
+     * @param string $server tcp://x.x.x.x:port/identifier or tcp://x.x.x.x:port or unix:///path/x.scok
      *
      * @return bool
      */

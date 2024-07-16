@@ -66,6 +66,10 @@ class T000Test extends TestCase
             throw new RuntimeException('启动服务端失败');
         }
         $this->process = $process;
+        $process2 = proc_open($this->svr.' -addr=/tmp/rpcx.sock -ptype=unix', [], $pipes);
+        if (!is_resource($process2)) {
+            throw new RuntimeException('启动服务端失败');
+        }
         sleep(5);
     }
 

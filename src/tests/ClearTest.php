@@ -5,11 +5,7 @@
 
 namespace Rpcx\tests;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase as TestCase;
-use Rpcx\Client as Client;
-
-;
 
 /**
  * 清理测试环境
