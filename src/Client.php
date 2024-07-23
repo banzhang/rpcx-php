@@ -1,13 +1,15 @@
 <?php
 
 namespace Rpcx;
-
+include("./vendor/autoload.php");
+ini_set("error_reporting", E_ALL);
 use Exception;
 use InvalidArgumentException;
 use Rpcx\Connection\IConnection as IConnection;
 use Rpcx\Connection\PTcpConnection as PTcpConnection;
 use Rpcx\Connection\TcpConnection as TcpConnection;
 use Rpcx\Connection\UdsConnection as UdsConnection;
+use Rpcx\Connection\MultiConnection as MultiConnection;
 use Rpcx\Exception\ErrorResponseException as ErrorResponseException;
 use Rpcx\Protocol\Header as Header;
 use Rpcx\Protocol\Request as Request;
@@ -74,5 +76,12 @@ class Client
         $response->decode($play);
         return $response;
     }
+
+    public static function Test() {
+        $res = (new MultiConnection())->DO();
+    }
 }
+
+Client::Test();
+
 

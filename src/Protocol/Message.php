@@ -14,7 +14,7 @@ class Message
     public function __construct($service_path = null, $service_method = null, $payload = null, $metadata = null, $message_id = null)
     {
         $this->header = new Header();
-        $this->message_id = $message_id ?? 0;
+        $this->message_id = $message_id ?? microtime();
         $this->service_path = $service_path;
         $this->service_method = $service_method;
         $this->metadata = $metadata;

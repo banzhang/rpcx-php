@@ -37,14 +37,6 @@ class Request extends Message
         return $result;
     }
 
-    public function dump()
-    {
-        $bytes = $this->toBytes();
-        foreach (str_split($bytes) as $byte) {
-            echo dechex(ord($byte)).' ';
-        }
-    }
-
     private function __encodeMetadata()
     {
         if (empty($this->metadata)) {

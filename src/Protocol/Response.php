@@ -6,6 +6,8 @@ class Response extends Message
 {
     public $total_size = 0;
 
+    public $end = false;
+
     public function __construct(Header $header)
     {
         parent::__construct();
@@ -17,6 +19,10 @@ class Response extends Message
         return $this->header->message_status_type === MessageStatusType::Normal;
     }
 
+    public function isEnd(): bool {
+        return $this->end;
+    }
+
     public function getError(): null|string
     {
         return $this->metadata['__rpcx_error__'] ?? null;
@@ -24,9 +30,11 @@ class Response extends Message
 
     public function decode($data)
     {
-        $offset = 4;
+        $offset = 0;
         $this->message_id =unpack('J', substr($data, $offset, 8))[1];
         $offset += 8;
+        $this->total_size = unpack('N', substr($data, $offset, 4))[1];
+        $offset += 4;
         $service_path_size = unpack('N', substr($data, $offset, 4))[1];
         $offset += 4;
         $this->service_path = substr($data, $offset, $service_path_size);
@@ -42,6 +50,9 @@ class Response extends Message
         $playload_size = unpack('N', substr($data, $offset, 4))[1];
         $offset += 4;
         $playload = substr($data, $offset, $playload_size);
+        if (strlen($playload) == $playload_size) {
+            $this->end = true;
+        }
         $this->__decodeMetadata($metadata);
         $this->__decodePayload($playload);
     }

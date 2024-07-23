@@ -27,5 +27,11 @@
     },
     "scripts": {
         "test": "phpunit --stop-on-failure --coverage-clover coverage.xml --coverage-filter src "
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }
