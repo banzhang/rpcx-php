@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9579aba9e02b92b4ebd427b64a2b4610",
+    "content-hash": "7beba87ec44e3084ee0d0906249b00d3",
     "packages": [],
     "packages-dev": [
         {
@@ -634,7 +634,7 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.10",
+            "version": "9.6.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
@@ -1755,7 +1755,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.4 || ^8.0"
+        "php": "^8.0"
     },
     "platform-dev": [],
     "platform-overrides": {
