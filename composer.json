@@ -23,7 +23,7 @@
         "php": "^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^9.6.10"
     },
     "scripts": {
         "test": "phpunit --stop-on-failure --coverage-clover coverage.xml --coverage-filter src "
