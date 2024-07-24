@@ -30,6 +30,16 @@ class TcpConnection implements IConnection
      */
     protected float $opTimeOut = 0.010;
 
+    protected array $optTimeOutArr = [
+        'sec' => 0,
+        'msec' => 3,
+    ];
+
+    protected array $connectTimeOutArr = [
+        'sec' => 0,
+        'msec' => 10,
+    ];
+
     /**
      * @var array 链接选项
      */
@@ -56,6 +66,10 @@ class TcpConnection implements IConnection
         return true;
     }
 
+    public function getServer():string {
+        return $this->host . '::' . $this->port;
+    }
+
     /**
      * @param float $connectTimeOut
      * @param float $opTimeOut
@@ -66,6 +80,12 @@ class TcpConnection implements IConnection
     {
         $this->connectTimeOut = $connectTimeOut;
         $this->opTimeOut = $opTimeOut;
+        $sec = (int) $this->opTimeOut;
+        $msec = ($this->opTimeOut - $sec) * 1000;
+        $this->optTimeOutArr = [
+            'sec' => $sec,
+             'msec' => $msec,
+        ];
         return true;
     }
 
@@ -82,7 +102,7 @@ class TcpConnection implements IConnection
     /**
      * @return bool
      */
-    public function open(int $flag, mixed $context): bool
+    public function open(int $flag, mixed $context = null): bool
     {
         $flag = STREAM_CLIENT_CONNECT | $flag;
         $errno = 0;
@@ -121,8 +141,8 @@ class TcpConnection implements IConnection
     {
         $len = strlen($data);
         $ret = stream_socket_sendto($this->conn, $data);
-
-        stream_set_timeout($this->conn, $this->opTimeOut);
+        $optTime = $this->getOpTimeOut();
+        stream_set_timeout($this->conn, $optTime["sec"], $optTime["msec"]);
         if ($ret === false) {
             $err = stream_get_meta_data($this->conn);
             throw new TcpException("tcp://{$this->host}:{$this->port}", "send data error".json_encode($err), TcpException::TCP_SEND_ERROR);
@@ -161,5 +181,15 @@ class TcpConnection implements IConnection
 
     public function getSocket(): mixed {
         return $this->conn;
+    }
+
+    public function getConnectTimeOut(): array
+    {
+        return $this->connectTimeOutArr;
+    }
+
+    public function getOpTimeOut(): array
+    {
+        return $this->optTimeOutArr;
     }
 }

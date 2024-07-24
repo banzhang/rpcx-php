@@ -14,7 +14,7 @@ class UdsConnection extends TcpConnection
         return true;
     }
 
-    public function open(int $flag, mixed $context): bool
+    public function open(int $flag, mixed $context = null): bool
     {
         $flag = STREAM_CLIENT_CONNECT | $flag;
         $errno = 0;

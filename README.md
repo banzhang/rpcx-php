@@ -34,10 +34,24 @@ rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html) 
 - composer run-script test src/tests
 
 ## 使用
+### 单个请求
 ```
 $client = new Client('127.0.0.1::8972', Client::TCP, false);
 $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
 $res = $response->payload;
+```
+### 并行请求（IO复用，非真实并行）
+```
+$addr = "127.0.0.1::8972";
+$c1 = (new Client($addr, Client::TCP, false))
+            ->call('Arith', 'Mul', ['A' => 20, 'B' => 20]);
+$c2 = (new Client($addr, Client::TCP, false))
+            ->call('Arith', 'Mul', ['A' => 40, 'B' => 40]);
+$c3 = (new Client($addr,Client::TCP, false))
+            ->call('Arith', 'Mul', ['A' => 80, 'B' => 80]);
+$mc = new MultiClient();
+$mc->addClient($c1)->addClient($c2)->addClient($c3)->do();
+$c1->getResponse()->payload;
 ```
 
 ## 问题反馈

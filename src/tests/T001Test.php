@@ -21,7 +21,8 @@ class T001Test extends TestCase
         $succ = ["C" => 200];
         for ($i=0;$i<3;$i++) {
             $client = new Client('127.0.0.1::8972', Client::TCP, false);
-            $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
+            $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20])
+                ->do();
             $res = $response->payload;
         }
 
@@ -33,7 +34,8 @@ class T001Test extends TestCase
         $succ = ["C" => 200];
         for ($i=0;$i<3;$i++) {
             $client = new Client('/tmp/rpcx.sock', Client::UDS, false);
-            $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
+            $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20])
+                ->do();
             $res = $response->payload;
         }
 
@@ -51,7 +53,8 @@ class T001Test extends TestCase
         $succ = ["C" => 400];
         for ($i=0;$i<3;$i++) {
             $client = new Client('127.0.0.1::8972', Client::TCP, true);
-            $response = $client->call('Arith', 'Mul', ['A' => 20, 'B' => 20]);
+            $response = $client->call('Arith', 'Mul', ['A' => 20, 'B' => 20])
+                ->do();
             $res = $response->payload;
         }
         $this->assertEquals($succ, $res);
