@@ -124,15 +124,23 @@ class TcpConnection implements IConnection
     public function open(int $flag, mixed $context = null): bool
     {
         $flag = STREAM_CLIENT_CONNECT | $flag;
+        if (($flag & STREAM_CLIENT_ASYNC_CONNECT) == STREAM_CLIENT_ASYNC_CONNECT ) {
+            $flag =  $flag;
+        }
+
         $errno = 0;
         $errstr = "";
-        $conn = stream_socket_client("tcp://{$this->host}:{$this->port}",
+        $conn = @stream_socket_client("tcp://{$this->host}:{$this->port}",
         $errno,
             $errstr,
             $this->connectTimeOut,
             $flag,
             $context
         );
+
+        if (!$conn) {
+            throw new TcpException("tcp://{$this->host}:{$this->port}", $errstr, $errno);
+        }
 
         if ($errno) {
             throw new TcpException("tcp://{$this->host}:{$this->port}", $errstr, $errno);
@@ -179,7 +187,12 @@ class TcpConnection implements IConnection
      */
     public function rev(?int $length = null): string
     {
-        return stream_get_contents($this->conn, $length);
+        $ret = stream_get_contents($this->conn, $length);
+        $err = stream_get_meta_data($this->conn);
+        if ($err["timed_out"] || $err["blocked"]) {
+            throw new TcpException("tcp://{$this->host}:{$this->port}", "send data error".json_encode($err), TcpException::TCP_SEND_ERROR);
+        }
+        return $ret;
     }
 
     /**

@@ -227,11 +227,13 @@ class MultiStreamConnection
     {
         foreach ($write as $sock) {
             $id = $this->getSocketID($sock);
-            $res = stream_socket_sendto($sock, $this->send[$id]);
+            $res = @stream_socket_sendto($sock, $this->send[$id]);
+
             // 出错要从所有句柄删除
-            if ($res === false) {
+            if ($res ===-1 || $res === false) {
                 $this->delSocket($sock);
                 $this->error[$id] = stream_get_meta_data($sock);
+                unset($this->recv[$id]);
                 continue;
                 //  写完要从写句柄删除
             } elseif ($res === strlen($this->send[$id])) {
@@ -258,6 +260,11 @@ class MultiStreamConnection
     {
         foreach ($read as $sock) {
             $id = $this->getSocketID($sock);
+            // 出错时提前被删除
+            if (!isset($this->originRead[$id])) {
+                unset($this->recv[$id]);
+                continue;
+            }
             $res = stream_get_contents($sock);
             // 读数据出错
             if ($res === false) {

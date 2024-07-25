@@ -154,7 +154,6 @@ class Client
         if ($this->inMulti()) {
             return null;
         }
-        $this->transport->setTimeout(1, 1);
         if (!$this->transport->IsConnected()) {
             $this->transport->Open(STREAM_CLIENT_CONNECT);
         }
@@ -195,7 +194,7 @@ class Client
             return $this->do();
         }
         if (0 != count($this->error)) {
-            throw new RpcxRuntimeException($this->service, json_encode($this->errors), 5000);
+            throw new RpcxRuntimeException($this->service, json_encode($this->error), 5000);
         }
         return $this->response;
     }

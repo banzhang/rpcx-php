@@ -54,6 +54,12 @@ $mc->addClient($c1)->addClient($c2)->addClient($c3)->do();
 $c1->getResponse()->payload;
 ```
 
+### 待补充功能和测试
+
+- [ ] 连接超时
+- [ ] 连接失败
+- [ ] 异步连接如何确定是 broken pipe
+
 ## 问题反馈
 ### 联系方式
 - qq:337207961@qq.com

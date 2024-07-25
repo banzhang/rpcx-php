@@ -67,7 +67,6 @@ class MultiClient
             if (!is_array($error)) {
                 continue;
             }
-            $this->clients[$id]->setResponse(null);
             $this->clients[$id]->setError($error);
         }
     }
