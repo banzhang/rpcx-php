@@ -15,10 +15,14 @@ class T003Test extends TestCase
         $addr = "127.0.0.1::8972";
         $c1 = (new Client($addr, Client::TCP, false))
             ->call('Arith', 'Mul', ['A' => 20, 'B' => 20]);
+        $c1->getTransport()->setTimeout(0.03, 0.03);
         $c2 = (new Client($addr, Client::TCP, false))
             ->call('Arith', 'Mul', ['A' => 40, 'B' => 40]);
+        $c2->getTransport()->setTimeout(0.03, 0.03);
         $c3 = (new Client($addr,Client::TCP, false))
             ->call('Arith', 'Mul', ['A' => 80, 'B' => 80]);
+
+        $c3->getTransport()->setTimeout(0.03, 0.03);
 
         $mc = new MultiClient();
         $mc->addClient($c1)->addClient($c2)->addClient($c3)->do();

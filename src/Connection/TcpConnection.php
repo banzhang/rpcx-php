@@ -100,7 +100,8 @@ class TcpConnection implements IConnection
         $this->connectTimeOut = $connectTimeOut;
         $this->opTimeOut = $opTimeOut;
         $sec = (int) $this->opTimeOut;
-        $msec = ($this->opTimeOut - $sec) * 1000;
+        // 秒，毫秒，微妙
+        $msec = ($this->opTimeOut - $sec) * 1000000;
         $this->optTimeOutArr = [
             'sec' => $sec,
              'msec' => $msec,
@@ -189,7 +190,8 @@ class TcpConnection implements IConnection
     {
         $ret = stream_get_contents($this->conn, $length);
         $err = stream_get_meta_data($this->conn);
-        if ($err["timed_out"] || $err["blocked"]) {
+        if ($ret === "" && ($err["timed_out"] || $err["blocked"])) {
+            var_dump($ret);
             throw new TcpException("tcp://{$this->host}:{$this->port}", "send data error".json_encode($err), TcpException::TCP_SEND_ERROR);
         }
         return $ret;
