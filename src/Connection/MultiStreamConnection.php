@@ -1,21 +1,21 @@
 <?php
 /*
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *   limitations under the License.
  *
  */
 
@@ -27,47 +27,47 @@ use Rpcx\Protocol\Request as Request;
 use Rpcx\Protocol\Response as Response;
 
 /**
- *
+ * IO 多路复用循环执行器
  */
 class MultiStreamConnection
 {
     /**
-     * @var array
+     * @var array $stream 每个元素都是一个IConnection
      */
     protected array $stream = [];
 
     /**
-     * @var array
+     * @var array $resource $stream 对应的 socket 资源
      */
     protected array $resource = [];
 
     /**
-     * @var array
+     * @var array $send $stream 对应的待发送数据
      */
     protected array $send = [];
 
     /**
-     * @var array
+     * @var array $recv $stream 对应的接收数据
      */
     protected array $recv = [];
 
     /**
-     * @var array
+     * @var array   $error $stream 对应的错误信息
      */
     protected array $error = [];
 
     /**
-     * @var array
+     * @var array $opt $stream 是否完成配置
      */
     protected array $opt = [];
 
     /**
-     * @var array
+     * @var array    $originWrite $stream 对应写入监控句柄
      */
     protected array $originWrite = [];
 
     /**
-     * @var array
+     * @var array   $originRead $stream 对应读取监控句柄
      */
     protected array $originRead = [];
 
@@ -76,14 +76,15 @@ class MultiStreamConnection
      */
     protected array $originExcept = [];
 
-    // 每个 select 的间隔时间
     /**
-     * @var float
+     * @var float $loopTimeOut  每个 select 的间隔时间
      */
     protected float $loopTimeOut = 0.001;
 
 
     /**
+     * 判断当前连接是否读取完成
+     *
      * @param string $data
      *
      * @return bool
