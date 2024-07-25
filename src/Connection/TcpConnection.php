@@ -31,13 +31,7 @@ class TcpConnection implements IConnection
     /**
      * @var string 服务地址
      */
-    protected string $host;
-
-    /**
-     * @var string 端口
-     */
-    protected string $port;
-
+    protected string $server;
 
     /**
      * @var float 默认链接超时时间，因为rpc多用于同机房微服务，链接不会超过 3 ms
@@ -67,26 +61,22 @@ class TcpConnection implements IConnection
     protected $conn;
 
     /**
-     * @param string $server
+     * @param string $server tcp://x.x.x.x:port/identifier or tcp://x.x.x.x:port
      *
      * @return bool
      */
     public function setServer(string $server): bool
     {
-        $arr = explode('::', $server);
-        if (count($arr) != 2) {
-            throw new TcpException($server,
-                'server format error',
-                TcpException::TCP_SERVER_FOMART_ERROR);
-            return false;
+        $p = "/^tcp:\/\/(\d{1,3}\.){3}\d{1,3}:\d{1,6}[\/a-zA-Z0-9]{0,}$/";
+        if (!preg_match($p, $server)) {
+            throw new TcpException($server, "server address error");
         }
-        $this->host = $arr[0];
-        $this->port = $arr[1];
+        $this->server = $server;
         return true;
     }
 
     public function getServer():string {
-        return $this->host . '::' . $this->port;
+        return $this->server;
     }
 
     /**
@@ -100,7 +90,8 @@ class TcpConnection implements IConnection
         $this->connectTimeOut = $connectTimeOut;
         $this->opTimeOut = $opTimeOut;
         $sec = (int) $this->opTimeOut;
-        $msec = ($this->opTimeOut - $sec) * 1000;
+        // 秒，毫秒，微妙
+        $msec = ($this->opTimeOut - $sec) * 1000000;
         $this->optTimeOutArr = [
             'sec' => $sec,
              'msec' => $msec,
@@ -130,7 +121,7 @@ class TcpConnection implements IConnection
 
         $errno = 0;
         $errstr = "";
-        $conn = @stream_socket_client("tcp://{$this->host}:{$this->port}",
+        $conn = @stream_socket_client($this->server,
         $errno,
             $errstr,
             $this->connectTimeOut,
@@ -139,11 +130,11 @@ class TcpConnection implements IConnection
         );
 
         if (!$conn) {
-            throw new TcpException("tcp://{$this->host}:{$this->port}", $errstr, $errno);
+            throw new TcpException("tcp://{$this->server}", $errstr, $errno);
         }
 
         if ($errno) {
-            throw new TcpException("tcp://{$this->host}:{$this->port}", $errstr, $errno);
+            throw new TcpException("tcp://{$this->server}", $errstr, $errno);
         }
         $this->conn = $conn;
         return true;
@@ -172,10 +163,14 @@ class TcpConnection implements IConnection
         stream_set_timeout($this->conn, $optTime["sec"], $optTime["msec"]);
         if ($ret === false) {
             $err = stream_get_meta_data($this->conn);
-            throw new TcpException("tcp://{$this->host}:{$this->port}", "send data error".json_encode($err), TcpException::TCP_SEND_ERROR);
+            throw new TcpException("tcp://{$this->server}",
+                "send data error".json_encode($err),
+                TcpException::TCP_SEND_ERROR);
         }
         if ($ret != $len) {
-            throw new TcpException("tcp://{$this->host}:{$this->port}", "data len {$len}!= tcp send len {$ret}", TcpException::TCP_SEND_ERROR);
+            throw new TcpException("tcp://{$this->server}",
+                "data len {$len}!= tcp send len {$ret}",
+                TcpException::TCP_SEND_ERROR);
         }
         return true;
     }
@@ -187,10 +182,13 @@ class TcpConnection implements IConnection
      */
     public function rev(?int $length = null): string
     {
+        $s = microtime(1);
         $ret = stream_get_contents($this->conn, $length);
         $err = stream_get_meta_data($this->conn);
-        if ($err["timed_out"] || $err["blocked"]) {
-            throw new TcpException("tcp://{$this->host}:{$this->port}", "send data error".json_encode($err), TcpException::TCP_SEND_ERROR);
+        if ($ret === "" && ($err["timed_out"] || $err["blocked"])) {
+            throw new TcpException("tcp://{$this->server}",
+                "send data error".json_encode($err),
+                TcpException::TCP_SEND_ERROR);
         }
         return $ret;
     }

@@ -163,12 +163,14 @@ class Client
             $this->transport->Close();
             return null;
         }
-        $headStr = $this->transport->rev(Header::LEN);
-        if (strlen($headStr) < Header::LEN) {
+        $data = $this->transport->rev(16);
+        if (strlen($data) < 16) {
             $this->transport->Close();
             throw new UnexpectedValueException('Invalid header size');
         }
-
+        $total = unpack('N', substr($data, 12, 4))[1];
+        $play  = $this->transport->rev($total);
+        $headStr = substr($data, 0, Header::LEN);
         $header = new Header();
         $header->decode($headStr);
         $response = new Response($header);
@@ -177,7 +179,7 @@ class Client
                 'Failed to call service: ' . $response->getError(),
                 ErrorResponseException::RESPONSE_ERROR);
         }
-        $play = $this->transport->rev();
+        $play = substr($data, Header::LEN) . $play;
         $response->decode($play);
         $this->response = $response;
         $this->state = 1;
