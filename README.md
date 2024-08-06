@@ -36,13 +36,22 @@ rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html) 
 ## 使用
 ### 单个请求
 ```
-$client = new Client('127.0.0.1::8972', Client::TCP, false);
+$client = new Client('tcp://127.0.0.1:8972/', Client::TCP, false);
 $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
 $res = $response->payload;
 ```
+### tcp 长链接
+```
+// 当同一个服务建立多个长链接时请追加uniqid
+$client = new Client('tcp://127.0.0.1:8972/uniqid', Client::TCP, true);
+$response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
+$res = $response->payload;
+```
+
 ### 并行请求（IO复用，非真实并行）
 ```
-$addr = "127.0.0.1::8972";
+$addr = "tcp://127.0.0.1:8972";
+// 并行请求时不支持长链接
 $c1 = (new Client($addr, Client::TCP, false))
             ->call('Arith', 'Mul', ['A' => 20, 'B' => 20]);
 $c2 = (new Client($addr, Client::TCP, false))
