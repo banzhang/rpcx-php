@@ -130,11 +130,11 @@ class TcpConnection implements IConnection
         );
 
         if (!$conn) {
-            throw new TcpException("tcp://{$this->server}", $errstr, $errno);
+            throw new TcpException($this->server, $errstr, $errno);
         }
 
         if ($errno) {
-            throw new TcpException("tcp://{$this->server}", $errstr, $errno);
+            throw new TcpException($this->server, $errstr, $errno);
         }
         $this->conn = $conn;
         return true;
@@ -163,12 +163,12 @@ class TcpConnection implements IConnection
         stream_set_timeout($this->conn, $optTime["sec"], $optTime["msec"]);
         if ($ret === false) {
             $err = stream_get_meta_data($this->conn);
-            throw new TcpException("tcp://{$this->server}",
+            throw new TcpException($this->server,
                 "send data error".json_encode($err),
                 TcpException::TCP_SEND_ERROR);
         }
         if ($ret != $len) {
-            throw new TcpException("tcp://{$this->server}",
+            throw new TcpException($this->server,
                 "data len {$len}!= tcp send len {$ret}",
                 TcpException::TCP_SEND_ERROR);
         }
@@ -186,7 +186,7 @@ class TcpConnection implements IConnection
         $ret = stream_get_contents($this->conn, $length);
         $err = stream_get_meta_data($this->conn);
         if ($ret === "" && ($err["timed_out"] || $err["blocked"])) {
-            throw new TcpException("tcp://{$this->server}",
+            throw new TcpException($this->server,
                 "send data error".json_encode($err),
                 TcpException::TCP_SEND_ERROR);
         }
