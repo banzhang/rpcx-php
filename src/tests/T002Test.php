@@ -5,7 +5,7 @@
 
 namespace Rpcx\tests;
 
-use PHPUnit\Framework\TestCase as TestCase;;
+use PHPUnit\Framework\TestCase as TestCase;
 use Rpcx\Client as Client;
 use InvalidArgumentException;
 
@@ -21,7 +21,7 @@ class T002Test extends TestCase
     public function testClientException()
     {
         try {
-            $client = new Client('127.0.0.1:8972', 'http', false);
+            new Client('tcp://127.0.0.1/', 'http', false);
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('Invalid connection type', $e->getMessage());
         }

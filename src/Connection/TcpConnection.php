@@ -67,9 +67,11 @@ class TcpConnection implements IConnection
      */
     public function setServer(string $server): bool
     {
-        $p = "/^tcp:\/\/(\d{1,3}\.){3}\d{1,3}:\d{1,6}[\/a-zA-Z0-9]{0,}$/";
+        $p = "/^tcp:\/\/(\d{1,3}\.){3}\d{1,3}:\d{1,6}[\/a-zA-Z0-9]*$/";
         if (!preg_match($p, $server)) {
-            throw new TcpException($server, "server address error");
+            throw new TcpException($server,
+                "server address error",
+                TcpException::TCP_SERVER_FOMART_ERROR);
         }
         $this->server = $server;
         return true;
@@ -114,9 +116,9 @@ class TcpConnection implements IConnection
      */
     public function open(int $flag, mixed $context = null): bool
     {
-        $flag = STREAM_CLIENT_CONNECT | $flag;
-        if (($flag & STREAM_CLIENT_ASYNC_CONNECT) == STREAM_CLIENT_ASYNC_CONNECT ) {
-            $flag =  $flag;
+
+        if (($flag & STREAM_CLIENT_ASYNC_CONNECT) != STREAM_CLIENT_ASYNC_CONNECT ) {
+            $flag = STREAM_CLIENT_CONNECT | $flag;
         }
 
         $errno = 0;
@@ -182,7 +184,6 @@ class TcpConnection implements IConnection
      */
     public function rev(?int $length = null): string
     {
-        $s = microtime(1);
         $ret = stream_get_contents($this->conn, $length);
         $err = stream_get_meta_data($this->conn);
         if ($ret === "" && ($err["timed_out"] || $err["blocked"])) {

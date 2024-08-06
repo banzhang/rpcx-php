@@ -30,7 +30,7 @@ use Rpcx\Client as Client;
 class T004Test extends \PHPUnit\Framework\TestCase
 {
     /**
-     * 测试 Call 方法
+     * 测试 Call 方法超时
      *
      * @return void
      */
@@ -38,10 +38,10 @@ class T004Test extends \PHPUnit\Framework\TestCase
     {
         $timeout = false;
         try {
-            $client = new Client('127.0.0.1::8973', Client::TCP, false);
+            $client = new Client('tcp://127.0.0.1:8973', Client::TCP, false);
             $client->getTransport()->setTimeout(0.001, 0.03);
-            $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20])->do();
-        } Catch (\Exception $e) {
+            $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20])->do();
+        } catch (\Exception $e) {
             $timeout = true;
         }
 

@@ -10,9 +10,14 @@ use Rpcx\MultiClient as MultiClient;
 
 class T003Test extends TestCase
 {
+    /**
+     * 测试IO多路复用
+     *
+     * @throws \InvalidArgumentException
+     */
     public function testDo()
     {
-        $addr = "127.0.0.1::8972";
+        $addr = "tcp://127.0.0.1:8972";
         $c1 = (new Client($addr, Client::TCP, false))
             ->call('Arith', 'Mul', ['A' => 20, 'B' => 20]);
         $c1->getTransport()->setTimeout(0.03, 0.03);

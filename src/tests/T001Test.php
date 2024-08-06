@@ -20,7 +20,7 @@ class T001Test extends TestCase
     {
         $succ = ["C" => 200];
         for ($i=0;$i<3;$i++) {
-            $client = new Client('127.0.0.1::8972', Client::TCP, false);
+            $client = new Client('tcp://127.0.0.1:8972', Client::TCP, false);
             $client->getTransport()->setTimeout(0.03, 1);
             $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20])
                 ->do();
@@ -45,7 +45,7 @@ class T001Test extends TestCase
     }
 
     /**
-     * 测试 Call 方法
+     * 测试长链接 Call 方法
      *
      * @return void
      */
@@ -54,7 +54,7 @@ class T001Test extends TestCase
         sleep(10);
         $succ = ["C" => 400];
         for ($i=0;$i<3;$i++) {
-            $client = new Client('127.0.0.1::8972', Client::TCP, true);
+            $client = new Client('tcp://127.0.0.1:8972/rpc0', Client::TCP, true);
             $client->getTransport()->setTimeout(0.03, 0.03);
             $response = $client->call('Arith', 'Mul', ['A' => 20, 'B' => 20])
                 ->do();
