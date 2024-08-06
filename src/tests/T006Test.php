@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Rpcx\Client as Client;
 
 /**
- * 测试客户端 TCP 的交互行为
+ * 测试客户端 TCP 长链接的交互行为
  */
 class T006Test extends TestCase
 {
