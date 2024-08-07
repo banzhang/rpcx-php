@@ -28,6 +28,7 @@ class Request extends Message
         parent::__construct(...$args);
         $this->header->heartbeat = $heartbeat;
         $this->header->oneway = $oneway;
+        $this->message_id = $args[4] ?: microtime(true) * 10000;
     }
 
     public function toBytes():string
@@ -49,7 +50,6 @@ class Request extends Message
 
         $totalSize = strlen($play);
         $result = $this->header->toBytes();
-        $this->message_id = microtime(true) * 10000;
         $result .= pack('J', $this->message_id);
         $result .= pack('N', $totalSize);
         $result .= $play;
@@ -82,11 +82,17 @@ class Request extends Message
 
     private function __serializePayload()
     {
-        if ($this->payload === null) {
+        if ($this->playload === null) {
             return null;
         }
         if ($this->header->serialize_type === SerializeType::Json) {
-            return json_encode($this->payload);
+            return json_encode($this->playload);
+        }
+        if ($this->header->serialize_type === SerializeType::MessagePack) {
+            if (!function_exists("msgpack_pack")) {
+                throw new \Exception('MessagePack extension is not installed');
+            }
+            return msgpack_pack($this->playload);
         }
         throw new \Exception('At present support only json');
     }

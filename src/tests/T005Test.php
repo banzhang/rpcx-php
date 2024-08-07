@@ -23,7 +23,7 @@ class T005Test extends TestCase
             $client->getTransport()->setTimeout(0.03, 0.03);
             $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20])
                 ->do();
-            $res = $response->payload;
+            $res = $response->playload;
         }
 
         $this->assertEquals($succ, $res);

@@ -31,8 +31,8 @@ class T003Test extends TestCase
 
         $mc = new MultiClient();
         $mc->addClient($c1)->addClient($c2)->addClient($c3)->do();
-        $this->assertEquals(["C" => 400], $c1->getResponse()->payload);
-        $this->assertEquals(["C" => 1600], $c2->getResponse()->payload);
-        $this->assertEquals(["C" => 6400], $c3->getResponse()->payload);
+        $this->assertEquals(["C" => 400], $c1->getResponse()->playload);
+        $this->assertEquals(["C" => 1600], $c2->getResponse()->playload);
+        $this->assertEquals(["C" => 6400], $c3->getResponse()->playload);
     }
 }

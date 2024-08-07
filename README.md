@@ -38,14 +38,14 @@ rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html) 
 ```
 $client = new Client('tcp://127.0.0.1:8972/', Client::TCP, false);
 $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
-$res = $response->payload;
+$res = $response->playload;
 ```
 ### tcp 长链接
 ```
 // 当同一个服务建立多个长链接时请追加uniqid
 $client = new Client('tcp://127.0.0.1:8972/uniqid', Client::TCP, true);
 $response = $client->call('Arith', 'Mul', ['A' => 10, 'B' => 20]);
-$res = $response->payload;
+$res = $response->playload;
 ```
 
 ### 并行请求（IO复用，非真实并行）
@@ -60,7 +60,7 @@ $c3 = (new Client($addr,Client::TCP, false))
             ->call('Arith', 'Mul', ['A' => 80, 'B' => 80]);
 $mc = new MultiClient();
 $mc->addClient($c1)->addClient($c2)->addClient($c3)->do();
-$c1->getResponse()->payload;
+$c1->getResponse()->playload;
 ```
 
 ## 问题反馈

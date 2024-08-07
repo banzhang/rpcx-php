@@ -103,7 +103,12 @@ class Response extends Message
         }
 
         if ($this->header->serialize_type == SerializeType::Json) {
-            $this->payload = json_decode($playload, true);
+            $this->playload = json_decode($playload, true);
+        } else if ($this->header->serialize_type == SerializeType::MessagePack) {
+            if (!function_exists("msgpack_pack")) {
+                throw new \Exception('MessagePack extension is not installed');
+            }
+            $this->playload = msgpack_unpack($playload);
         } else {
             throw new \Exception('At present support only json');
         }

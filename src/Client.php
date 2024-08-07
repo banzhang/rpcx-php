@@ -33,6 +33,7 @@ use Rpcx\Exception\RpcxRuntimeException;
 use Rpcx\Protocol\Header as Header;
 use Rpcx\Protocol\Request as Request;
 use Rpcx\Protocol\Response as Response;
+use Rpcx\Protocol\SerializeType as SerializeType;
 use UnexpectedValueException;
 
 /**
@@ -131,7 +132,9 @@ class Client
                          $meta = null,
                          $msg_id = null,
                          $heartbeat = false,
-                         $oneway = false):self
+                         $oneway = false,
+                         $serialize = SerializeType::Json,
+    ):self
     {
         $this->request = new Request($heartbeat,
             $oneway,
@@ -139,7 +142,8 @@ class Client
             $service_method,
             $args,
             $meta,
-            $msg_id);
+            $msg_id,
+            $serialize);
 
         $this->state = 2;
         return $this;

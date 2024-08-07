@@ -28,15 +28,21 @@ class Message
     public null|string $service_path;
     public null|string $service_method;
     public null|string $metadata;
-    public mixed  $payload;
+    public mixed  $playload;
 
-    public function __construct($service_path = null, $service_method = null, $payload = null, $metadata = null, $message_id = null)
+    public function __construct($service_path = null,
+                                $service_method = null,
+                                $playload = null,
+                                $metadata = null,
+                                $message_id = null,
+                                $serialize = SerializeType::Json)
     {
         $this->header = new Header();
+        $this->header->serialize_type = $serialize;
         $this->message_id = $message_id ?? microtime();
         $this->service_path = $service_path;
         $this->service_method = $service_method;
         $this->metadata = $metadata;
-        $this->payload = $payload;
+        $this->playload = $playload;
     }
 }
