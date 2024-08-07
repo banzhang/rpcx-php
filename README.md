@@ -17,17 +17,17 @@ rpcx-php 是 php 基于 [raw protocol](https://doc.rpcx.io/part5/protocol.html) 
 
 - 原生协议,性能高
 - 支持消息压缩 
-- 支持多种编码协议 Raw Json MessagePack Protobuf
+- 支持多种编码协议 Json MessagePack
 - 支持 TCP 长链接、短链接
 - 支持 TCP/UDS
 
 ## 计划支持
-- 并发请求
 - 自定义 Connection
+- protobuf ，有 msgpack 基本够用了
 
 ## 不支持
 - 心跳检测(考虑大部分是 fpm 环境)
-- 双向通信
+- 双向通信 
 
 ## 安装
 - composer require rpcx/rpc-php
